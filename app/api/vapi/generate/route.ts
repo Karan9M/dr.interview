@@ -32,7 +32,9 @@ export async function POST(req: Request) {
     `,
         })
         const interview = {
-            role,type,level,
+            role,
+            type,
+            level,
             techstack : techstack.split(','),
             questions:JSON.parse(questions),
             userId:userid,
@@ -40,14 +42,16 @@ export async function POST(req: Request) {
             coverImage: getRandomInterviewCover(),
             createdAt : new Date().toISOString()
         }
-        await db.collection('interviews').add(interview);
-        return Response.json({
-            success: true,
-        },{
-            status: 200
-        })
+
+        console.log("Generated Interview Object:", interview); // ✅ Debugging log
+
+        const docRef = await db.collection('interviews').add(interview);
+        console.log("Firestore Write Success:", docRef.id); // ✅ Log document ID
+        
+        return Response.json({ success: true, interviewId: docRef.id }, { status: 200 });
+        
     } catch (error) {
-        console.log(error);
+        console.log("Error occured while pushing interview to firebase",error);
         return Response.json({
             success: false, error:error
         }, {

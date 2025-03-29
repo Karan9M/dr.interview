@@ -59,7 +59,7 @@ const Agent = ({ userName, userId, type }: AgentProps) => {
         if(callStatus === CallStatus.FINISHED){
             router.push('/');
         } 
-    },[messages,callStatus,router,type,userId])
+    },[messages,callStatus,type,userId])
 
     const handleCall = async()=>{
         setCallStatus(CallStatus.CONNECTING);
